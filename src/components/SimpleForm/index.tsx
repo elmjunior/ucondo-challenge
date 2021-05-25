@@ -58,7 +58,7 @@ function SimpleFormContent({
   const { handleSubmit } = useFormContext();
 
   return (
-    <VStack p={5}>
+    <VStack p={5} colorScheme="transparent">
       {fields.map((field, key) =>
         field.name === "divider" ? (
           <Divider mb={5} key={`input-${key}`} />
@@ -67,7 +67,7 @@ function SimpleFormContent({
         )
       )}
 
-      <HStack w={100}>
+      <HStack w={100} colorScheme="transparent">
         <CustomButton
           w={100}
           isLoading={isLoading}

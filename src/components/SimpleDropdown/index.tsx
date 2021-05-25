@@ -19,14 +19,16 @@ export default function SimpleDropdown({
       name={name}
       rules={{ required: isRequired }}
       render={({ field: { onChange }, formState: { errors } }) => (
-        <VStack>
-          <Label
-            size="md"
-            mb={1}
-            colorScheme={errors?.[name] ? "pink" : "text"}
-          >
-            {label}
-          </Label>
+        <VStack colorScheme="transparent" mb={5}>
+          {label && (
+            <Label
+              size="md"
+              mb={1}
+              colorScheme={errors?.[name] ? "pink" : "label"}
+            >
+              {label}
+            </Label>
+          )}
 
           <SimpleDropdownButton options={options ?? []} onChange={onChange} />
         </VStack>

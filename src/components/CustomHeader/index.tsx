@@ -14,7 +14,7 @@ import { DrawerActions } from "@react-navigation/core";
 export default function CustomHeader(props: any): JSX.Element {
   const { navigation, scene, name, title } = props;
   const isMainScreen = useMemo(
-    () => navigation.canGoBack() && scene?.route?.name === "list",
+    () => scene?.route?.name === "list",
     [navigation, scene]
   );
 

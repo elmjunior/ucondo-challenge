@@ -35,9 +35,13 @@ export default function CustomInput({
       rules={{ required: isRequired }}
       defaultValue={defaultValue ?? ""}
       render={({ field: { onChange, onBlur, value } }) => (
-        <VStack mb={5}>
+        <VStack mb={5} colorScheme="transparent">
           {label && (
-            <Label size="md" mb={1}>
+            <Label
+              size="md"
+              mb={1}
+              colorScheme={errors?.[name] ? "pink" : "label"}
+            >
               {label}
             </Label>
           )}

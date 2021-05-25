@@ -62,4 +62,6 @@ export const CustomText = styled(DefaultText)<CustomTextProps>`
       ? `margin-top: ${props.my * 5}px;margin-bottom: ${props.my * 5}px `
       : undefined};
 `;
-export const Label = CustomText;
+export const Label = styled(CustomText)`
+  font-weight: 800;
+`;

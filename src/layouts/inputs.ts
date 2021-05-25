@@ -6,9 +6,10 @@ export const Input = styled.TextInput<InputProps>`
   border-radius: 10px;
   border: 1px solid
     ${(props) =>
-      props.isInvalid ? props.theme.colors.pink : props.theme.colors.pink};
+      props.isInvalid ? props.theme.colors.pink : props.theme.colors.white};
   padding: 10px;
   color: ${(props) => props.theme.colors.text};
+  background: ${(props) => props.theme.colors.white};
 `;
 
 export const SearchInput = styled(Input)`

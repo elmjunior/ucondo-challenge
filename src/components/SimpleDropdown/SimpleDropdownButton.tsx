@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-unused-vars */
-import { Button, Heading, HStack, Icon } from '../../layouts';
-import React, { useState } from 'react';
-import { useActionSheet } from '@expo/react-native-action-sheet';
+import { Button, Heading, HStack, Icon } from "../../layouts";
+import React, { useState } from "react";
+import { useActionSheet } from "@expo/react-native-action-sheet";
 
 interface SimpleDropdownButtonProps {
   options: Record<string, any>;
@@ -12,7 +12,7 @@ export default function SimpleDropdownButton({
   options,
   onChange,
 }: SimpleDropdownButtonProps): JSX.Element {
-  const [labelName, setLabelName] = useState('selecione');
+  const [labelName, setLabelName] = useState("selecione");
   const dropdownOptions: string[] =
     options?.map((option: Record<string, any>) => option.name) ?? [];
   const { showActionSheetWithOptions } = useActionSheet();
@@ -20,7 +20,7 @@ export default function SimpleDropdownButton({
   const handleOpenActionSheet = () =>
     showActionSheetWithOptions(
       {
-        options: ['Cancelar', ...dropdownOptions],
+        options: ["Cancelar", ...dropdownOptions],
         cancelButtonIndex: 0,
       },
       (buttonIndex) => {
@@ -29,13 +29,15 @@ export default function SimpleDropdownButton({
           setLabelName(selectedOption.name);
           onChange(selectedOption.id);
         }
-      },
+      }
     );
 
   return (
-    <Button colorScheme="backgroundHighlight" onPress={handleOpenActionSheet}>
+    <Button colorScheme="white" onPress={handleOpenActionSheet} p={3}>
       <HStack colorScheme="transparent" align="center" justify="space-between">
-        <Heading size="lg">{labelName}</Heading>
+        <Heading size="md" colorScheme="text">
+          {labelName}
+        </Heading>
         <Icon name="chevron-down" size={16} />
       </HStack>
     </Button>
