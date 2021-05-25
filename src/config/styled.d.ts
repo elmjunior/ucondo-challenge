@@ -13,6 +13,7 @@ declare module "styled-components" {
       pink: string;
       white: string;
       transparent: string;
+      transparentGray: string;
     };
   }
 }

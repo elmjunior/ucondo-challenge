@@ -12,6 +12,7 @@ declare interface ThemeInterface {
     label: string;
     pink: string;
     transparent: string;
+    transparentGray: string;
   };
 }
 const {

@@ -9,6 +9,7 @@ export type ThemeColorSchemes =
   | "label"
   | "white"
   | "pink"
+  | "transparentGray"
   | "transparent";
 
 interface StackPaddings {
@@ -65,7 +66,8 @@ export interface ButtonProps
   extends ColorSchema,
     StackMargins,
     StackFlex,
-    StackPaddings {
+    StackPaddings,
+    StackBorderRadius {
   w?: number;
 }
 export type IconProps = ColorSchema & FontSize;
