@@ -9,6 +9,8 @@ interface DataBaseContextData {
   update(item: RegisterItem): Promise<RegisterItem>;
   remove(item: RegisterItem): void;
   getLastChild(item: RegisterItem): Promise<RegisterItem[]>;
+  getItems(): Promise<RegisterItem[]>;
+  searchItems(term: string): Promise<RegisterItem[]>;
 }
 
 export const DataBaseContext = React.createContext<DataBaseContextData>(
@@ -51,6 +53,25 @@ export const DataBaseProvider: React.FC = ({ children }) => {
   useEffect(() => {
     getItems();
   }, []);
+
+  const searchItems = (term: string): Promise<RegisterItem[]> => {
+    return new Promise(async function (resolve, reject) {
+      db.transaction(
+        (tx) => {
+          tx.executeSql(
+            `select * from items where name like '%${term}%' or code like '%${term}%' order by code asc`,
+            [],
+            (_, { rows }) => {
+              const result = rows as unknown as { _array: any[] };
+              resolve(result._array);
+              setItems(result._array);
+            }
+          );
+        },
+        (e) => reject(e)
+      );
+    });
+  };
 
   const add = (item: RegisterItem): Promise<RegisterItem> =>
     new Promise(async function (resolve, reject) {
@@ -132,6 +153,8 @@ export const DataBaseProvider: React.FC = ({ children }) => {
         update,
         remove,
         getLastChild,
+        searchItems,
+        getItems,
         items,
       }}
     >
