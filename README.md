@@ -13,7 +13,7 @@ Project developed in React Native for the Developer vacancy technical challenge
 yarn ios
 ```
 
-### Run Andoird
+### Run Android
 
 ```
 yarn android

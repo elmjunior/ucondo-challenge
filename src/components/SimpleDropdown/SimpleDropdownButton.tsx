@@ -28,7 +28,7 @@ export default function SimpleDropdownButton({
       const defaultSelectedOption = options.find(
         (option) => option.id === defaultValue
       );
-      setLabelName(defaultSelectedOption.name);
+      defaultSelectedOption && setLabelName(defaultSelectedOption.name);
     }
   }, []);
   useEffect(() => {
@@ -36,7 +36,7 @@ export default function SimpleDropdownButton({
       const defaultSelectedOption = options.find(
         (option) => option.id === newValue
       );
-      setLabelName(defaultSelectedOption.name);
+      defaultSelectedOption && setLabelName(defaultSelectedOption.name);
     }
   }, [newValue]);
 
