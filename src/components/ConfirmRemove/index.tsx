@@ -8,6 +8,7 @@ import {
   HStack,
   Button,
   Modal,
+  Heading,
 } from "../../layouts";
 
 export default function ConfirmRemove({
@@ -36,7 +37,11 @@ export default function ConfirmRemove({
         <CustomText size="lg" mt={5} mb={2}>
           Deseja excluir a conta?
         </CustomText>
-        <Label size="lg">{item?.title}</Label>
+        <Heading
+          size="lg"
+          colorScheme="label"
+        >{`${item.code} - ${item.name}`}</Heading>
+
         <HStack
           colorScheme="transparent"
           align="center"
