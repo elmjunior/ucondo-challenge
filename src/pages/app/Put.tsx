@@ -35,7 +35,7 @@ export default function Put(): JSX.Element {
       isRequired: true,
     },
     {
-      name: "isSelectable",
+      name: "acceptPosting",
       label: "Aceita lançamentos",
       options: [
         { id: "yes", name: "Sim" },
@@ -51,7 +51,16 @@ export default function Put(): JSX.Element {
     <VStack flex={1}>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
         <VStack colorScheme="secondary" p={5} mt={3} btlr={5} btrr={5} flex={1}>
-          <SimpleForm onSubmit={onSubmit} fields={fields}></SimpleForm>
+          <SimpleForm
+            onSubmit={onSubmit}
+            fields={fields}
+            defaultValues={{
+              code: "1",
+              name: "12",
+              type: "receipt",
+              acceptPosting: "yes",
+            }}
+          ></SimpleForm>
         </VStack>
       </KeyboardAvoidingView>
     </VStack>

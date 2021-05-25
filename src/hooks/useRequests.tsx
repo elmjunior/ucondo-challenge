@@ -1,15 +1,18 @@
 import { useQuery, gql, useLazyQuery, useApolloClient } from "@apollo/client";
 import React, { useContext, useEffect, useMemo } from "react";
+import useDataBaseContext from "./useDatabaseContext";
 
 export type RegisterType = "receipt" | "expense";
+export type AcceptPosting = "yes" | "no";
 
 export interface RegisterItem {
   id: number;
   parent?: RegisterItem;
+  parentId?: number;
   code: string;
   name: string;
   type: RegisterType;
-  acceptPosting: boolean;
+  acceptPosting: AcceptPosting;
 }
 
 interface RequestContextData {
@@ -20,15 +23,6 @@ interface RequestContextData {
 
   isLoading: boolean;
 }
-
-// export const registerItemFragment = gql`
-//   fragment registerItem_Part on RegisterItem {
-//     id
-//     name
-//     code
-//     type
-//   }
-// `;
 
 const LIST = gql`
   query registerItems {
@@ -57,34 +51,24 @@ export const RequestContext = React.createContext<RequestContextData>(
 );
 
 export const RequestsProvider: React.FC = ({ children }) => {
-  //   const [getItems, { data, loading, client }] = useLazyQuery<{
-  //     getItems: RegisterItem[];
-  //   }>(LIST, {
-  //     fetchPolicy: "cache-only",
-  //   });
+  const { add, items } = useDataBaseContext();
   const { data, loading, client } = useQuery<{ registerItems: RegisterItem[] }>(
     LIST,
     {
       fetchPolicy: "cache-only",
     }
   );
-  console.log(data);
 
-  const createRegister = (registerItem: RegisterItem) => {
+  useEffect(() => {
     client.cache.writeQuery({
       query: LIST,
       data: {
-        registerItems: [
-          ...(data?.registerItems ?? []),
-          {
-            __typename: "RegisterItem",
-            id: 1,
-            ...registerItem,
-          },
-        ],
+        registerItems: items,
       },
     });
-  };
+  }, [items]);
+
+  const createRegister = (registerItem: RegisterItem) => add(registerItem);
 
   const removeRegister = (registerItem: RegisterItem) =>
     console.log(registerItem);

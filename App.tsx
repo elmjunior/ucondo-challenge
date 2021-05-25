@@ -11,6 +11,7 @@ import Routes from "./src/Routes";
 import { ActionSheetProvider } from "@expo/react-native-action-sheet";
 import { ApolloProvider } from "@apollo/client";
 import { RequestsProvider } from "./src/hooks/useRequests";
+import { DataBaseProvider } from "./src/hooks/useDatabaseContext";
 
 const apolloClient = createApolloClient();
 
@@ -35,7 +36,9 @@ export default function App(): JSX.Element {
       <NavigationContainer>
         <ActionSheetProvider>
           <ThemeModeProvider>
-            <AppContent />
+            <DataBaseProvider>
+              <AppContent />
+            </DataBaseProvider>
           </ThemeModeProvider>
         </ActionSheetProvider>
       </NavigationContainer>
