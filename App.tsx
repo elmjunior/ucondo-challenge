@@ -19,9 +19,7 @@ function AppContent(): JSX.Element {
   const { themeMode } = useThemeModeContext();
   return (
     <>
-      <StatusBar
-        barStyle={themeMode === "dark" ? "light-content" : "dark-content"}
-      />
+      <StatusBar barStyle={"light-content"} />
 
       <ThemeProvider theme={themeMode === "light" ? lightMode : darkMode}>
         <RequestsProvider>

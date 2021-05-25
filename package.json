@@ -12,6 +12,7 @@
     "apollo-upload-client": "^15.0.0",
     "expo": "~41.0.0",
     "expo-sqlite": "~9.1.0",
+    "expo-web-browser": "^9.1.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-hook-form": "^7.6.6",

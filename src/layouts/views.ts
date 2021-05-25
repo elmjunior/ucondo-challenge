@@ -73,7 +73,14 @@ export const Box = styled(Stack)``;
 
 export const Divider = styled(Stack)`
   height: 1px;
-  background-color: ${(props) => props.theme.colors.secondary};
+  background-color: ${(props) => {
+    if (props.colorScheme) {
+      return (
+        props.theme.colors[props.colorScheme ?? "background"] ?? "background"
+      );
+    }
+    return props.theme.colors.primary;
+  }};
   margin-top: 20px;
   margin-bottom: 20px;
 `;

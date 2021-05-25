@@ -1,14 +1,19 @@
-import { CustomText, Heading, HStack, VStack } from "../../layouts";
+import { CustomText, Divider, Heading, HStack, VStack } from "../../layouts";
 import React, { useMemo } from "react";
-import { SafeAreaView, Switch } from "react-native";
+import * as WebBrowser from "expo-web-browser";
+import { SafeAreaView, Switch, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/core";
 import useThemModeContext from "../../hooks/useThemeMode";
 
 export default function SideMenu(): JSX.Element {
   const { themeMode, toogleThemeMode } = useThemModeContext();
   const isEnabled = useMemo(() => themeMode === "dark", [themeMode]);
-  const navigation = useNavigation();
 
+  const onPress = async () => {
+    await WebBrowser.openBrowserAsync(
+      `https://github.com/elmjunior/ucondo-challenge`
+    );
+  };
   return (
     <VStack flex={1} colorScheme="secondary">
       <SafeAreaView style={{ flex: 1 }}>
@@ -19,7 +24,9 @@ export default function SideMenu(): JSX.Element {
           flex={1}
         >
           <VStack colorScheme="transparent" p={3}>
-            <Heading mb={5}>uCondo</Heading>
+            <Heading mb={5} colorScheme="primary">
+              uCondo
+            </Heading>
             <HStack
               colorScheme="transparent"
               align="center"
@@ -34,6 +41,22 @@ export default function SideMenu(): JSX.Element {
               />
               <CustomText size="lg">modo escuro</CustomText>
             </HStack>
+          </VStack>
+          <VStack colorScheme="transparent">
+            <CustomText size="lg" mb={3}>
+              uCondo Challenge
+            </CustomText>
+            <TouchableOpacity onPress={onPress}>
+              <CustomText size="md">Github Repository</CustomText>
+            </TouchableOpacity>
+            <Divider />
+
+            <CustomText size="md" mb={2}>
+              Author: Edilson Junior
+            </CustomText>
+            <CustomText size="md" mb={2}>
+              E-mail: elmjunior@gmail.com
+            </CustomText>
           </VStack>
         </VStack>
       </SafeAreaView>
