@@ -1,34 +1,34 @@
-# [TypeScript Example](https://www.typescriptlang.org/)
+# uCondo Challenge
 
-<p>
-  <!-- iOS -->
-  <img alt="Supports Expo iOS" longdesc="Supports Expo iOS" src="https://img.shields.io/badge/iOS-4630EB.svg?style=flat-square&logo=APPLE&labelColor=999999&logoColor=fff" />
-  <!-- Android -->
-  <img alt="Supports Expo Android" longdesc="Supports Expo Android" src="https://img.shields.io/badge/Android-4630EB.svg?style=flat-square&logo=ANDROID&labelColor=A4C639&logoColor=fff" />
-  <!-- Web -->
-  <img alt="Supports Expo Web" longdesc="Supports Expo Web" src="https://img.shields.io/badge/web-4630EB.svg?style=flat-square&logo=GOOGLE-CHROME&labelColor=4285F4&logoColor=fff" />
-</p>
+Project developed in React Native for the Developer vacancy technical challenge
 
-```sh
-npx create-react-native-app -t with-typescript
-```
-
-TypeScript is a superset of JavaScript which gives you static types and powerful tooling in Visual Studio Code including autocompletion and useful inline warnings for type errors.
-
-## 🚀 How to use
-
-#### Creating a new project
+## Instructions
 
 - Install the CLI: `npm i -g expo-cli`
-- Create a project: `expo init --template expo-template-blank-typescript`
-- `cd` into the project
+- Install project dependencies: `yarn install`
 
-### Adding TypeScript to existing projects
+### Run iOS
 
-- Create a blank TypeScript config: `touch tsconfig.json`
-- Run `expo start` to automatically configure TypeScript
-- Rename files to TypeScript, `.tsx` for React components and `.ts` for plain typescript files
+```
+yarn ios
+```
 
-## 📝 Notes
+### Run Andoird
 
-- [Expo TypeScript guide](https://docs.expo.io/versions/latest/guides/typescript/)
+```
+yarn android
+```
+
+## APK Download
+
+[Google_Drive](https://drive.google.com/file/d/103JPQodrc3tWS_J1liaF-zyatr2rs3dB)
+
+## Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
