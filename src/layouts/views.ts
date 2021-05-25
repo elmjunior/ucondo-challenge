@@ -53,6 +53,7 @@ const Stack = styled.View<StackProps>`
     props.justify ? `justify-content: ${props.justify}` : undefined};
 
   ${(props) => (props.br ? `border-radius: ${props.br * 5}px` : undefined)};
+  ${(props) => (props.overflow ? `overflow: ${props.overflow}` : undefined)};
 `;
 
 export const HStack = styled(Stack)`

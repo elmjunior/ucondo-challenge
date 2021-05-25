@@ -7,6 +7,7 @@ export type ThemeColorSchemes =
   | "text"
   | "muted"
   | "label"
+  | "white"
   | "pink"
   | "transparent";
 
@@ -35,6 +36,7 @@ interface StackFlex {
   align?: "center" | "flex-end" | "flex-start";
   justify?: "center" | "space-between" | "flex-start" | "flex-end";
   flex?: number;
+  overflow?: "hidden";
 }
 interface ColorSchema {
   colorScheme?: ThemeColorSchemes;
