@@ -43,13 +43,11 @@ export default function CustomHeader(props: any): JSX.Element {
             </Button>
             <Heading ml={isMainScreen ? 2 : 4}>{title}</Heading>
           </HStack>
-          <Button colorScheme="transparent" onPress={handleRightClick}>
-            <IconAntDesign
-              name={isMainScreen ? "plus" : "check"}
-              size={32}
-              colorScheme="white"
-            />
-          </Button>
+          {isMainScreen && (
+            <Button colorScheme="transparent" onPress={handleRightClick}>
+              <IconAntDesign name={"plus"} size={32} colorScheme="white" />
+            </Button>
+          )}
         </HStack>
       </SafeAreaView>
     </VStack>

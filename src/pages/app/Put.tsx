@@ -3,7 +3,7 @@ import React from "react";
 import { KeyboardAvoidingView, Alert } from "react-native";
 
 import useRequests from "../../hooks/useRequests";
-import { VStack } from "../../layouts";
+import { VScroll, VStack } from "../../layouts";
 import { RegisterItem } from "../../types";
 import Form from "./Form";
 
@@ -29,7 +29,9 @@ export default function Put(): JSX.Element {
     <VStack flex={1}>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
         <VStack colorScheme="secondary" p={5} mt={3} btlr={5} btrr={5} flex={1}>
-          <Form onSubmit={onSubmit} defaultValues={params?.item} />
+          <VScroll>
+            <Form onSubmit={onSubmit} defaultValues={params?.item} />
+          </VScroll>
         </VStack>
       </KeyboardAvoidingView>
     </VStack>
