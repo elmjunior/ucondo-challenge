@@ -25,18 +25,7 @@ const LIST = gql`
       code
       type
       acceptPosting
-    }
-  }
-`;
-
-const GET = gql`
-  query registerItems($id: Int!) {
-    registerItems(id: $id) {
-      id
-      name
-      code
-      type
-      acceptPosting
+      parentId
     }
   }
 `;
