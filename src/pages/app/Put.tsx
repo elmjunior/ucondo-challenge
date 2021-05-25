@@ -1,4 +1,4 @@
-import { useRoute } from "@react-navigation/core";
+import { useNavigation, useRoute } from "@react-navigation/core";
 import React, { useEffect } from "react";
 import { ActivityIndicator, KeyboardAvoidingView } from "react-native";
 import SimpleForm, { InputField } from "../../components/SimpleForm";
@@ -10,13 +10,15 @@ export default function Put(): JSX.Element {
   const { poastableItems, createRegister, updateRegister } = useRequests();
   const route = useRoute();
   const params = route.params as { item: RegisterItem };
+  const navigation = useNavigation();
 
   const fields: InputField[] = [
     {
       name: "parentId",
       label: "Conta pai",
       renderType: "dropdown",
-      options: poastableItems ?? [],
+      options:
+        poastableItems?.filter((item) => item.id !== params?.item?.id) ?? [],
     },
     {
       name: "code",
@@ -50,8 +52,10 @@ export default function Put(): JSX.Element {
     },
   ];
 
-  const onSubmit = (variables: RegisterItem) =>
-    !!params?.item?.id ? updateRegister(variables) : createRegister(variables);
+  const onSubmit = (variables: RegisterItem) => [
+    !!params?.item?.id ? updateRegister(variables) : createRegister(variables),
+    navigation.goBack(),
+  ];
   return (
     <VStack flex={1}>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">

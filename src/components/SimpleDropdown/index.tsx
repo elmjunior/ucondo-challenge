@@ -2,7 +2,7 @@
 import { VStack, Label } from "../../layouts";
 import React from "react";
 import { InputField } from "../SimpleForm";
-import { Controller } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 import SimpleDropdownButton from "./SimpleDropdownButton";
 interface SimpleDropdownProps extends InputField {
   options?: Record<string, any>[];
@@ -14,10 +14,13 @@ export default function SimpleDropdown({
   isRequired,
   name,
 }: SimpleDropdownProps): JSX.Element {
+  const { getValues } = useFormContext();
+
   return (
     <Controller
       name={name}
       rules={{ required: isRequired }}
+      defaultValue={getValues(name) ?? ""}
       render={({ field: { onChange }, formState: { errors } }) => (
         <VStack colorScheme="transparent" mb={5}>
           {label && (
@@ -30,7 +33,11 @@ export default function SimpleDropdown({
             </Label>
           )}
 
-          <SimpleDropdownButton options={options ?? []} onChange={onChange} />
+          <SimpleDropdownButton
+            options={options ?? []}
+            onChange={onChange}
+            name={name}
+          />
         </VStack>
       )}
     />
