@@ -1,19 +1,32 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { StatusBar } from "react-native";
+import { ThemeProvider } from "styled-components";
+import { darkMode, lightMode } from "./src/config/themes";
+import useThemeModeContext, {
+  ThemeModeProvider,
+} from "./src/hooks/useThemeMode";
+import Routes from "./src/Routes";
 
-export default function App() {
+function AppContent(): JSX.Element {
+  const { themeMode } = useThemeModeContext();
   return (
-    <View style={styles.container}>
-      <Text>ucondo</Text>
-    </View>
+    <>
+      <StatusBar
+        barStyle={themeMode === "dark" ? "light-content" : "dark-content"}
+      />
+      <ThemeProvider theme={themeMode === "light" ? lightMode : darkMode}>
+        <Routes />
+      </ThemeProvider>
+    </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+export default function App(): JSX.Element {
+  return (
+    <NavigationContainer>
+      <ThemeModeProvider>
+        <AppContent />
+      </ThemeModeProvider>
+    </NavigationContainer>
+  );
+}
