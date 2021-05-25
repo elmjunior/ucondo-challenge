@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { RegisterItem } from "../../hooks/useRequests";
 import { HStack, IconFeather, CustomText, Button } from "../../layouts";
+import { RegisterItem } from "../../types";
 import ConfirmRemove from "../ConfirmRemove";
 
 export default function ListItem({

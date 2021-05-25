@@ -1,8 +1,9 @@
 import React from "react";
 import { View, Text, KeyboardAvoidingView } from "react-native";
 import SimpleForm, { InputField } from "../../components/SimpleForm";
-import useRequests, { RegisterItem } from "../../hooks/useRequests";
+import useRequests from "../../hooks/useRequests";
 import { VStack } from "../../layouts";
+import { RegisterItem } from "../../types";
 
 export default function Put(): JSX.Element {
   const { poastableItems, createRegister } = useRequests();

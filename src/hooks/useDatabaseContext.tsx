@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import * as SQLite from "expo-sqlite";
 import { uid } from "uid";
-import { RegisterItem } from "./useRequests";
+import { RegisterItem } from "../types";
 
 interface DataBaseContextData {
   items: RegisterItem[];
