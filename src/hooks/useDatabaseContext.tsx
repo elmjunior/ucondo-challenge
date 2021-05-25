@@ -8,7 +8,7 @@ interface DataBaseContextData {
   add(item: RegisterItem): Promise<RegisterItem>;
   update(item: RegisterItem): Promise<RegisterItem>;
   remove(item: RegisterItem): void;
-  getChildren(item: RegisterItem): Promise<RegisterItem[]>;
+  getLastChild(item: RegisterItem): Promise<RegisterItem[]>;
 }
 
 export const DataBaseContext = React.createContext<DataBaseContextData>(
@@ -33,11 +33,15 @@ export const DataBaseProvider: React.FC = ({ children }) => {
             "create table if not exists items (id text primary key not null, code text unique not null, parentId text, name text, type text, acceptPosting text);"
           );
 
-          tx.executeSql("select * from items ", [], (_, { rows }) => {
-            const result = rows as unknown as { _array: any[] };
-            resolve(result._array);
-            setItems(result._array);
-          });
+          tx.executeSql(
+            "select * from items order by code asc",
+            [],
+            (_, { rows }) => {
+              const result = rows as unknown as { _array: any[] };
+              resolve(result._array);
+              setItems(result._array);
+            }
+          );
         },
         (e) => reject(e)
       );
@@ -90,13 +94,13 @@ export const DataBaseProvider: React.FC = ({ children }) => {
         (e) => reject(e)
       );
     });
-  const getChildren = (item: RegisterItem): Promise<RegisterItem[]> =>
+  const getLastChild = (item: RegisterItem): Promise<RegisterItem[]> =>
     new Promise(async function (resolve, reject) {
       const id = uid(16);
       db.transaction(
         (tx) => {
           tx.executeSql(
-            `select * from items where parentId = '${item.id}' order by code asc`,
+            `select * from items where parentId = '${item.id}' order by code desc limit 1`,
             [],
             (_, { rows }) => {
               const result = rows as unknown as { _array: any[] };
@@ -127,7 +131,7 @@ export const DataBaseProvider: React.FC = ({ children }) => {
         add,
         update,
         remove,
-        getChildren,
+        getLastChild,
         items,
       }}
     >
