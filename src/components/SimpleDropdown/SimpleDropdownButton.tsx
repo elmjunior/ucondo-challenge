@@ -19,7 +19,9 @@ export default function SimpleDropdownButton({
   const dropdownOptions: string[] =
     options?.map((option: Record<string, any>) => option.name) ?? [];
   const { showActionSheetWithOptions } = useActionSheet();
-  const { getValues } = useFormContext();
+  const { getValues, watch } = useFormContext();
+  const newValue = watch(name);
+
   useEffect(() => {
     const defaultValue = getValues(name);
     if (defaultValue) {
@@ -29,6 +31,14 @@ export default function SimpleDropdownButton({
       setLabelName(defaultSelectedOption.name);
     }
   }, []);
+  useEffect(() => {
+    if (newValue) {
+      const defaultSelectedOption = options.find(
+        (option) => option.id === newValue
+      );
+      setLabelName(defaultSelectedOption.name);
+    }
+  }, [newValue]);
 
   const handleOpenActionSheet = () =>
     showActionSheetWithOptions(

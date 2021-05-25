@@ -1,6 +1,6 @@
 import { useNavigation, useRoute } from "@react-navigation/core";
 import React from "react";
-import { KeyboardAvoidingView } from "react-native";
+import { KeyboardAvoidingView, Alert } from "react-native";
 
 import useRequests from "../../hooks/useRequests";
 import { VStack } from "../../layouts";
@@ -13,10 +13,18 @@ export default function Put(): JSX.Element {
   const params = route.params as { item: RegisterItem };
   const navigation = useNavigation();
 
-  const onSubmit = (variables: RegisterItem) => [
-    !!params?.item?.id ? updateRegister(variables) : createRegister(variables),
-    navigation.goBack(),
-  ];
+  const onSubmit = async (variables: RegisterItem) => {
+    const result = !!params?.item?.id
+      ? await updateRegister(variables)
+      : await createRegister(variables);
+
+    if (result.error) {
+      return Alert.alert("Ops!", result.error.message, [{ text: "OK" }], {
+        cancelable: false,
+      });
+    }
+    navigation.goBack();
+  };
   return (
     <VStack flex={1}>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">

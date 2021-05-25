@@ -1,5 +1,5 @@
 import { useRoute } from "@react-navigation/core";
-import React from "react";
+import React, { useState } from "react";
 import { FormProvider, useForm, useFormContext } from "react-hook-form";
 import { View, Text, TextInputProps } from "react-native";
 import CustomButton from "../../components/CustomButton";
@@ -36,11 +36,15 @@ function FormContent({ onSubmit }: FromProps): JSX.Element {
   const { poastableItems } = useRequests();
   const route = useRoute();
   const { handleSubmit, setValue } = useFormContext();
+
+  const [fixedType, setFiexedType] = useState<string | undefined>();
   const params = route.params as { item: RegisterItem };
   const { getCode } = useCodes();
   const customChange = async (item: RegisterItem) => {
     const newCode = await getCode(item);
     setValue("code", newCode);
+    setFiexedType(item.type);
+    setValue("type", item.type);
   };
   const fields: InputField[] = [
     {
@@ -75,6 +79,11 @@ function FormContent({ onSubmit }: FromProps): JSX.Element {
       ],
       renderType: "dropdown",
       isRequired: true,
+      customRules: {
+        validate: (value: string) => {
+          return fixedType ? value === fixedType : true;
+        },
+      },
     },
     {
       name: "acceptPosting",

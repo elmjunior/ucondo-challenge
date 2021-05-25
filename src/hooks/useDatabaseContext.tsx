@@ -5,8 +5,8 @@ import { RegisterItem } from "../types";
 
 interface DataBaseContextData {
   items: RegisterItem[];
-  add(item: RegisterItem): void;
-  update(item: RegisterItem): void;
+  add(item: RegisterItem): Promise<RegisterItem>;
+  update(item: RegisterItem): Promise<RegisterItem>;
   remove(item: RegisterItem): void;
   getChildren(item: RegisterItem): Promise<RegisterItem[]>;
 }
@@ -24,72 +24,74 @@ export const DataBaseProvider: React.FC = ({ children }) => {
 
   const db = openDatabase();
 
+  const getItems = (): Promise<RegisterItem[]> => {
+    return new Promise(async function (resolve, reject) {
+      db.transaction(
+        (tx) => {
+          // tx.executeSql("drop table items;");
+          tx.executeSql(
+            "create table if not exists items (id text primary key not null, code text unique not null, parentId text, name text, type text, acceptPosting text);"
+          );
+
+          tx.executeSql("select * from items ", [], (_, { rows }) => {
+            const result = rows as unknown as { _array: any[] };
+            resolve(result._array);
+            setItems(result._array);
+          });
+        },
+        (e) => reject(e)
+      );
+    });
+  };
+
   useEffect(() => {
-    db.transaction(
-      (tx) => {
-        // tx.executeSql("drop table items;");
-        tx.executeSql(
-          "create table if not exists items (id text primary key not null, code text, parentId text, name text, type text, acceptPosting text);"
-        );
-
-        tx.executeSql("select * from items ", [], (_, { rows }) => {
-          const result = rows as unknown as { _array: any[] };
-
-          setItems(result._array);
-        });
-      },
-      (e) => console.log(e)
-    );
+    getItems();
   }, []);
 
-  const add = (item: RegisterItem) => {
-    const id = uid(16);
-    db.transaction(
-      (tx) => {
-        console.log(
-          `insert into items (id, parentId, code, name, type, acceptPosting) values ('${id}', ${
-            item.parentId ? `${item.parentId}` : null
-          }, '${item.code}', '${item.name}', '${item.type}', '${
-            item.acceptPosting
-          }')`
-        );
-        tx.executeSql(
-          `insert into items (id, parentId, code, name, type, acceptPosting) values ('${id}', ${
-            item.parentId ? `"${item.parentId}"` : null
-          }, '${item.code}', '${item.name}', '${item.type}', '${
-            item.acceptPosting
-          }')`
-        );
-        tx.executeSql("select * from items", [], (_, { rows }) => {
-          const result = rows as unknown as { _array: any[] };
-          setItems(result._array);
-        });
-      },
-      (e) => console.log(e)
-    );
-  };
-  const update = (item: RegisterItem) => {
-    const id = uid(16);
-    db.transaction(
-      (tx) => {
-        tx.executeSql(
-          `update items set 
-            parentId = ${item.parentId ? `"${item.parentId}"` : null}, 
-            code = "${item.code}", 
-            name = "${item.name}", 
-            type = "${item.type}", 
-            acceptPosting = "${item.acceptPosting}" where id = "${item.id}"`
-        );
-        tx.executeSql("select * from items", [], (_, { rows }) => {
-          const result = rows as unknown as { _array: any[] };
-          setItems(result._array);
-        });
-      },
-      (e) => console.log(e)
-    );
-  };
-  const getChildren = (item: RegisterItem): Promise<RegisterItem[]> => {
-    return new Promise(async function (resolve, reject) {
+  const add = (item: RegisterItem): Promise<RegisterItem> =>
+    new Promise(async function (resolve, reject) {
+      const id = uid(16);
+      db.transaction(
+        (tx) => {
+          tx.executeSql(
+            `insert into items (id, parentId, code, name, type, acceptPosting) values ('${id}', ${
+              item.parentId ? `"${item.parentId}"` : null
+            }, '${item.code}', '${item.name}', '${item.type}', '${
+              item.acceptPosting
+            }')`,
+            [],
+            () => {
+              getItems();
+              resolve({ id, ...item });
+            }
+          );
+        },
+        (e) => reject(e)
+      );
+    });
+  const update = (item: RegisterItem): Promise<RegisterItem> =>
+    new Promise(async function (resolve, reject) {
+      db.transaction(
+        (tx) => {
+          tx.executeSql(
+            `update items set 
+          parentId = ${item.parentId ? `"${item.parentId}"` : null}, 
+          code = "${item.code}", 
+          name = "${item.name}", 
+          type = "${item.type}", 
+          acceptPosting = "${item.acceptPosting}" where id = "${item.id}"`,
+            [],
+            async () => {
+              await getItems();
+              resolve(item);
+            }
+          );
+        },
+        (e) => reject(e)
+      );
+    });
+  const getChildren = (item: RegisterItem): Promise<RegisterItem[]> =>
+    new Promise(async function (resolve, reject) {
       const id = uid(16);
       db.transaction(
         (tx) => {
@@ -105,7 +107,6 @@ export const DataBaseProvider: React.FC = ({ children }) => {
         (e) => reject(e)
       );
     });
-  };
   const remove = (item: RegisterItem) => {
     const id = uid(16);
     db.transaction(

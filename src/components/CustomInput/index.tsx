@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Input, Label, VStack } from "../../layouts";
+import { CustomText, HStack, Input, Label, VStack } from "../../layouts";
 import React from "react";
 import {
   Keyboard,
@@ -37,13 +37,26 @@ export default function CustomInput({
       render={({ field: { onChange, onBlur, value } }) => (
         <VStack mb={5} colorScheme="transparent">
           {label && (
-            <Label
-              size="md"
-              mb={1}
-              colorScheme={errors?.[name] ? "pink" : "label"}
+            <HStack
+              colorScheme="transparent"
+              align="center"
+              justify="space-between"
             >
-              {label}
-            </Label>
+              <Label
+                size="md"
+                mb={1}
+                colorScheme={errors?.[name] ? "pink" : "label"}
+              >
+                {label}
+              </Label>
+              {errors?.[name] && (
+                <CustomText colorScheme="pink" size="md">
+                  {errors?.[name].type === "validate"
+                    ? "tipo diferente da conta pai"
+                    : "obrigatório"}
+                </CustomText>
+              )}
+            </HStack>
           )}
           {!hidden && (
             <TouchableWithoutFeedback

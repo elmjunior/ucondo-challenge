@@ -26,4 +26,8 @@ export interface InputField extends TextInputProps {
   isRequired?: boolean;
   defaultValue?: any;
   hidden?: boolean;
+  customRules?: Record<string, any>;
+}
+export interface ErrorMessage {
+  message: string;
 }

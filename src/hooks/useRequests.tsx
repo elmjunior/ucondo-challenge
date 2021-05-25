@@ -1,13 +1,17 @@
-import { useQuery, gql, useLazyQuery, useApolloClient } from "@apollo/client";
+import { useQuery, gql } from "@apollo/client";
 import React, { useContext, useEffect, useMemo } from "react";
-import { RegisterItem } from "../types";
+import { ErrorMessage, RegisterItem } from "../types";
 import useDataBaseContext from "./useDatabaseContext";
 
+interface PutReturn {
+  item?: RegisterItem;
+  error?: ErrorMessage;
+}
 interface RequestContextData {
   list: RegisterItem[];
   poastableItems: RegisterItem[];
-  createRegister(register: RegisterItem): void;
-  updateRegister(register: RegisterItem): void;
+  createRegister(register: RegisterItem): Promise<PutReturn>;
+  updateRegister(register: RegisterItem): Promise<PutReturn>;
   removeRegister(register: RegisterItem): void;
 
   isLoading: boolean;
@@ -59,13 +63,41 @@ export const RequestsProvider: React.FC = ({ children }) => {
     });
   }, [items]);
 
-  const createRegister = (registerItem: RegisterItem) => add(registerItem);
-  const updateRegister = (registerItem: RegisterItem) => update(registerItem);
+  const createRegister = async (
+    registerItem: RegisterItem
+  ): Promise<PutReturn> => {
+    try {
+      const item = await add(registerItem);
+      return { item };
+    } catch (error) {
+      const message = !!error.toString().match(/UNIQUE/i)
+        ? "Este código já foi utilizado"
+        : "algo errado aconteceu";
+
+      return { error: { message } };
+    }
+  };
+
+  const updateRegister = async (
+    registerItem: RegisterItem
+  ): Promise<PutReturn> => {
+    try {
+      const item = await update(registerItem);
+
+      return { item };
+    } catch (error) {
+      const message = !!error.toString().match(/UNIQUE/i)
+        ? "Este código já foi utilizado"
+        : "algo errado aconteceu";
+
+      return { error: { message } };
+    }
+  };
 
   const removeRegister = (registerItem: RegisterItem) => remove(registerItem);
 
   const poastableItems = useMemo(
-    () => data?.registerItems?.filter((item) => item?.acceptPosting === "yes"),
+    () => data?.registerItems?.filter((item) => item?.acceptPosting === "no"),
     [data?.registerItems ?? []]
   );
 

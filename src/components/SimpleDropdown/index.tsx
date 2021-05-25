@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { VStack, Label } from "../../layouts";
+import { VStack, Label, CustomText, HStack } from "../../layouts";
 import React from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import SimpleDropdownButton from "./SimpleDropdownButton";
@@ -14,24 +14,38 @@ export default function SimpleDropdown({
   isRequired,
   name,
   customChange,
+  customRules,
 }: SimpleDropdownProps): JSX.Element {
   const { getValues } = useFormContext();
 
   return (
     <Controller
       name={name}
-      rules={{ required: isRequired }}
+      rules={{ required: isRequired, ...customRules }}
       defaultValue={getValues(name) ?? ""}
       render={({ field: { onChange }, formState: { errors } }) => (
         <VStack colorScheme="transparent" mb={5}>
           {label && (
-            <Label
-              size="md"
-              mb={1}
-              colorScheme={errors?.[name] ? "pink" : "label"}
+            <HStack
+              colorScheme="transparent"
+              align="center"
+              justify="space-between"
             >
-              {label}
-            </Label>
+              <Label
+                size="md"
+                mb={1}
+                colorScheme={errors?.[name] ? "pink" : "label"}
+              >
+                {label}
+              </Label>
+              {errors?.[name] && (
+                <CustomText colorScheme="pink" size="md">
+                  {errors?.[name].type === "validate"
+                    ? "tipo diferente da conta pai"
+                    : "obrigatório"}
+                </CustomText>
+              )}
+            </HStack>
           )}
 
           <SimpleDropdownButton
