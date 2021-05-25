@@ -1,10 +1,11 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View } from "react-native";
+import { VStack, Label } from "../../layouts";
 
 export default function Main(): JSX.Element {
   return (
-    <View>
-      <Text>MAIN</Text>
-    </View>
+    <VStack flex={1} align="center" justify="center">
+      <Label>MAIN</Label>
+    </VStack>
   );
 }
