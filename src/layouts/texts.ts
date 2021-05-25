@@ -40,7 +40,7 @@ const DefaultText = styled.Text<CustomTextProps>`
 `;
 
 export const Heading = styled(DefaultText)<CustomTextProps>`
-  color: ${(props) => props.theme.colors[props.colorScheme ?? "text"]};
+  color: ${(props) => props.theme.colors[props.colorScheme ?? "white"]};
   font-size: ${(props) => fontSizes[props.size ?? "xl"]}px;
   font-weight: 700;
 `;

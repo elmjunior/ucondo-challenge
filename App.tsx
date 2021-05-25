@@ -7,6 +7,7 @@ import useThemeModeContext, {
   ThemeModeProvider,
 } from "./src/hooks/useThemeMode";
 import Routes from "./src/Routes";
+import { ActionSheetProvider } from "@expo/react-native-action-sheet";
 
 function AppContent(): JSX.Element {
   const { themeMode } = useThemeModeContext();
@@ -24,9 +25,11 @@ function AppContent(): JSX.Element {
 export default function App(): JSX.Element {
   return (
     <NavigationContainer>
-      <ThemeModeProvider>
-        <AppContent />
-      </ThemeModeProvider>
+      <ActionSheetProvider>
+        <ThemeModeProvider>
+          <AppContent />
+        </ThemeModeProvider>
+      </ActionSheetProvider>
     </NavigationContainer>
   );
 }

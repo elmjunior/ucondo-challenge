@@ -35,10 +35,3 @@ export const mergeItem = async (key: string, value: any) => {
   }
   return value;
 };
-
-export const getToken = async () => {
-  const token = await getItem("currentToken");
-  return token;
-};
-export const setToken = async (token?: string) =>
-  setItem("currentToken", token);

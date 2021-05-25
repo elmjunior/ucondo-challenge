@@ -11,6 +11,7 @@ export const lightMode: DefaultTheme = Object.freeze({
     muted: "#A0A0B2",
     label: "#6A6A6A",
     pink: "#FF6680",
+    white: "#fff",
     ...defaultColors,
   },
 });

@@ -11,6 +11,7 @@ declare module "styled-components" {
       muted: string;
       label: string;
       pink: string;
+      white: string;
       transparent: string;
     };
   }
