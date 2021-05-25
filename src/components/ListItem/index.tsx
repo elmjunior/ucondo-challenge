@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TouchableOpacity } from "react-native";
+import { RegisterItem } from "../../hooks/useRequests";
 import { HStack, IconFeather, CustomText, Button } from "../../layouts";
 import ConfirmRemove from "../ConfirmRemove";
 
@@ -7,17 +7,21 @@ export default function ListItem({
   item,
   onPress,
 }: {
-  item: any;
+  item: RegisterItem;
   onPress(): void;
 }): JSX.Element {
   const [itemToRemove, setItemToRemove] = useState<any | undefined>();
   const [isLoading, setLoading] = useState(false);
+
   const handleRemove = () => {
     setLoading(true);
     setTimeout(() => {
       setItemToRemove(undefined);
     }, 2000);
   };
+
+  const color = item.type === "receipt" ? "green" : "orange";
+
   return (
     <>
       <ConfirmRemove
@@ -35,8 +39,8 @@ export default function ListItem({
         justify="space-between"
       >
         <Button onPress={onPress} flex={1} colorScheme="transparent" p={0}>
-          <CustomText colorScheme={item.color} size="lg">
-            {item.title}
+          <CustomText colorScheme={color} size="lg">
+            {`${item.code} - ${item.name}`}
           </CustomText>
         </Button>
         <Button

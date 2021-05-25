@@ -32,8 +32,8 @@ interface StackMargins {
 }
 interface StackBorderRadius {
   br?: number;
-  btr?: number;
-  btl?: number;
+  btrr?: number;
+  btlr?: number;
 }
 interface StackFlex {
   align?: "center" | "flex-end" | "flex-start";

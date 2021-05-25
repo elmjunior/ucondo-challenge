@@ -10,6 +10,7 @@ import useThemeModeContext, {
 import Routes from "./src/Routes";
 import { ActionSheetProvider } from "@expo/react-native-action-sheet";
 import { ApolloProvider } from "@apollo/client";
+import { RequestsProvider } from "./src/hooks/useRequests";
 
 const apolloClient = createApolloClient();
 
@@ -21,7 +22,9 @@ function AppContent(): JSX.Element {
         barStyle={themeMode === "dark" ? "light-content" : "dark-content"}
       />
       <ThemeProvider theme={themeMode === "light" ? lightMode : darkMode}>
-        <Routes />
+        <RequestsProvider>
+          <Routes />
+        </RequestsProvider>
       </ThemeProvider>
     </>
   );
