@@ -31,6 +31,8 @@ interface StackMargins {
 }
 interface StackBorderRadius {
   br?: number;
+  btr?: number;
+  btl?: number;
 }
 interface StackFlex {
   align?: "center" | "flex-end" | "flex-start";
@@ -59,7 +61,11 @@ export interface InputProps {
   isInvalid?: boolean;
 }
 
-export interface ButtonProps extends ColorSchema, StackMargins {
+export interface ButtonProps
+  extends ColorSchema,
+    StackMargins,
+    StackFlex,
+    StackPaddings {
   w?: number;
 }
 export type IconProps = ColorSchema & FontSize;

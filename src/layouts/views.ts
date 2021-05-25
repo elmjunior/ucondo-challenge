@@ -53,6 +53,11 @@ const Stack = styled.View<StackProps>`
     props.justify ? `justify-content: ${props.justify}` : undefined};
 
   ${(props) => (props.br ? `border-radius: ${props.br * 5}px` : undefined)};
+  ${(props) =>
+    props.btr ? `border-top-right-radius: ${props.btr * 5}px` : undefined};
+  ${(props) =>
+    props.btl ? `border-top-left-radius: ${props.btl * 5}px` : undefined};
+
   ${(props) => (props.overflow ? `overflow: ${props.overflow}` : undefined)};
 `;
 

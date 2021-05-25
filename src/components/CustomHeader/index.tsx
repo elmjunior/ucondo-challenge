@@ -23,7 +23,7 @@ export default function CustomHeader(props: any): JSX.Element {
     <VStack>
       <SafeAreaView>
         <HStack p={3} justify="space-between" align="center">
-          <Heading>{scene.route.name === "stats" ? "hyapp" : title}</Heading>
+          <Heading>{title}</Heading>
           <CustomButton colorScheme="transparent" onPress={handlLeftClick}>
             <Icon name={hasBack ? "angle-left" : "bars"} />
           </CustomButton>

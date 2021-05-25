@@ -15,9 +15,10 @@ export default function Search(): JSX.Element {
     <FormProvider {...methods}>
       <HStack
         colorScheme="white"
-        br={10}
         align="center"
         overflow="hidden"
+        br={10}
+        mx={3}
         px={5}
       >
         <IconFeather name="search" colorScheme="muted" />
