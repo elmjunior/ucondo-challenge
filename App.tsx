@@ -1,19 +1,15 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
+import { ActionSheetProvider } from "@expo/react-native-action-sheet";
 import { StatusBar } from "react-native";
 import { ThemeProvider } from "styled-components";
 import { darkMode, lightMode } from "./src/config/themes";
-import createApolloClient from "./src/services/apollo";
 import useThemeModeContext, {
   ThemeModeProvider,
 } from "./src/hooks/useThemeMode";
 import Routes from "./src/Routes";
-import { ActionSheetProvider } from "@expo/react-native-action-sheet";
-import { ApolloProvider } from "@apollo/client";
 import { RequestsProvider } from "./src/hooks/useRequests";
 import { DataBaseProvider } from "./src/hooks/useDatabaseContext";
-
-const apolloClient = createApolloClient();
 
 function AppContent(): JSX.Element {
   const { themeMode } = useThemeModeContext();
@@ -31,16 +27,14 @@ function AppContent(): JSX.Element {
 }
 export default function App(): JSX.Element {
   return (
-    <ApolloProvider client={apolloClient}>
-      <NavigationContainer>
-        <ActionSheetProvider>
-          <ThemeModeProvider>
-            <DataBaseProvider>
-              <AppContent />
-            </DataBaseProvider>
-          </ThemeModeProvider>
-        </ActionSheetProvider>
-      </NavigationContainer>
-    </ApolloProvider>
+    <NavigationContainer>
+      <ActionSheetProvider>
+        <ThemeModeProvider>
+          <DataBaseProvider>
+            <AppContent />
+          </DataBaseProvider>
+        </ThemeModeProvider>
+      </ActionSheetProvider>
+    </NavigationContainer>
   );
 }

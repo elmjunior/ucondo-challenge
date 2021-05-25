@@ -5,6 +5,7 @@ import ConfirmRemove from "../../components/ConfirmRemove";
 import ListHeader from "../../components/ListHeader";
 import ListItem from "../../components/ListItem";
 import Search from "../../components/Search";
+import useDataBaseContext from "../../hooks/useDatabaseContext";
 import useRequests from "../../hooks/useRequests";
 
 import { VStack } from "../../layouts";
@@ -12,12 +13,9 @@ import { RegisterItem } from "../../types";
 
 export default function List(): JSX.Element {
   const navigation = useNavigation();
-  const { list, removeRegister } = useRequests();
+  const { items, remove } = useDataBaseContext();
   const [itemToRemove, setItemToRemove] = useState<RegisterItem | undefined>();
-  const handleRemove = () => [
-    removeRegister(itemToRemove),
-    setItemToRemove(undefined),
-  ];
+  const handleRemove = () => [remove(itemToRemove), setItemToRemove(undefined)];
   return (
     <>
       <VStack flex={1}>
@@ -25,7 +23,7 @@ export default function List(): JSX.Element {
         <VStack colorScheme="secondary" p={5} mt={8} btlr={5} btrr={5} flex={1}>
           <ListHeader />
           <FlatList
-            data={list}
+            data={items}
             renderItem={({ item }) => (
               <ListItem
                 item={item}

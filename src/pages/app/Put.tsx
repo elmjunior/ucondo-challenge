@@ -8,7 +8,7 @@ import { RegisterItem } from "../../types";
 import Form from "./Form";
 
 export default function Put(): JSX.Element {
-  const { poastableItems, createRegister, updateRegister } = useRequests();
+  const { createRegister, updateRegister } = useRequests();
   const route = useRoute();
   const params = route.params as { item: RegisterItem };
   const navigation = useNavigation();
