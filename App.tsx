@@ -3,11 +3,15 @@ import { NavigationContainer } from "@react-navigation/native";
 import { StatusBar } from "react-native";
 import { ThemeProvider } from "styled-components";
 import { darkMode, lightMode } from "./src/config/themes";
+import createApolloClient from "./src/services/apollo";
 import useThemeModeContext, {
   ThemeModeProvider,
 } from "./src/hooks/useThemeMode";
 import Routes from "./src/Routes";
 import { ActionSheetProvider } from "@expo/react-native-action-sheet";
+import { ApolloProvider } from "@apollo/client";
+
+const apolloClient = createApolloClient();
 
 function AppContent(): JSX.Element {
   const { themeMode } = useThemeModeContext();
@@ -24,12 +28,14 @@ function AppContent(): JSX.Element {
 }
 export default function App(): JSX.Element {
   return (
-    <NavigationContainer>
-      <ActionSheetProvider>
-        <ThemeModeProvider>
-          <AppContent />
-        </ThemeModeProvider>
-      </ActionSheetProvider>
-    </NavigationContainer>
+    <ApolloProvider client={apolloClient}>
+      <NavigationContainer>
+        <ActionSheetProvider>
+          <ThemeModeProvider>
+            <AppContent />
+          </ThemeModeProvider>
+        </ActionSheetProvider>
+      </NavigationContainer>
+    </ApolloProvider>
   );
 }
