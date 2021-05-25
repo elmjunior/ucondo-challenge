@@ -3,15 +3,15 @@ import defaultColors from "./defaultColors";
 
 const darkMode: DefaultTheme = Object.freeze({
   colors: {
-    primary: "#622490",
-    secondary: "#F0EDF5",
-    green: "#1BA803",
-    orange: "#E28856",
+    primary: "#371452",
+    secondary: "#A796C5",
+    green: "#116402",
+    orange: "#C05821",
     text: "#3D3D4C",
-    muted: "#A0A0B2",
+    muted: "#6E6E87",
     label: "#6A6A6A",
     pink: "#FF6680",
-    white: "#fff",
+    white: "#B2A3CC",
     ...defaultColors,
   },
 });
