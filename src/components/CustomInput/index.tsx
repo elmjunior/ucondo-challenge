@@ -6,8 +6,8 @@ import {
   TextInputBase,
   TouchableWithoutFeedback,
 } from "react-native";
-import { InputField } from "../SimpleForm";
 import { useFormContext, Controller } from "react-hook-form";
+import { InputField } from "../../types";
 interface CustomInputProps extends InputField {
   options?: Record<string, any>[];
   label?: string;

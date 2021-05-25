@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { VStack, Label } from "../../layouts";
 import React from "react";
-import { InputField } from "../SimpleForm";
 import { Controller, useFormContext } from "react-hook-form";
 import SimpleDropdownButton from "./SimpleDropdownButton";
+import { InputField } from "../../types";
 interface SimpleDropdownProps extends InputField {
   options?: Record<string, any>[];
   label?: string;
@@ -13,6 +13,7 @@ export default function SimpleDropdown({
   label,
   isRequired,
   name,
+  customChange,
 }: SimpleDropdownProps): JSX.Element {
   const { getValues } = useFormContext();
 
@@ -35,7 +36,10 @@ export default function SimpleDropdown({
 
           <SimpleDropdownButton
             options={options ?? []}
-            onChange={onChange}
+            onChange={(id) => [
+              onChange(id),
+              customChange?.(options.find((option) => option.id === id)),
+            ]}
             name={name}
           />
         </VStack>

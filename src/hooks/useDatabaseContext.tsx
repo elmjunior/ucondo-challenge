@@ -8,6 +8,7 @@ interface DataBaseContextData {
   add(item: RegisterItem): void;
   update(item: RegisterItem): void;
   remove(item: RegisterItem): void;
+  getChildren(item: RegisterItem): Promise<RegisterItem[]>;
 }
 
 export const DataBaseContext = React.createContext<DataBaseContextData>(
@@ -30,8 +31,10 @@ export const DataBaseProvider: React.FC = ({ children }) => {
         tx.executeSql(
           "create table if not exists items (id text primary key not null, code text, parentId text, name text, type text, acceptPosting text);"
         );
-        tx.executeSql("select * from items", [], (_, { rows }) => {
+
+        tx.executeSql("select * from items ", [], (_, { rows }) => {
           const result = rows as unknown as { _array: any[] };
+
           setItems(result._array);
         });
       },
@@ -43,9 +46,16 @@ export const DataBaseProvider: React.FC = ({ children }) => {
     const id = uid(16);
     db.transaction(
       (tx) => {
-        tx.executeSql(
+        console.log(
           `insert into items (id, parentId, code, name, type, acceptPosting) values ('${id}', ${
             item.parentId ? `${item.parentId}` : null
+          }, '${item.code}', '${item.name}', '${item.type}', '${
+            item.acceptPosting
+          }')`
+        );
+        tx.executeSql(
+          `insert into items (id, parentId, code, name, type, acceptPosting) values ('${id}', ${
+            item.parentId ? `"${item.parentId}"` : null
           }, '${item.code}', '${item.name}', '${item.type}', '${
             item.acceptPosting
           }')`
@@ -64,7 +74,7 @@ export const DataBaseProvider: React.FC = ({ children }) => {
       (tx) => {
         tx.executeSql(
           `update items set 
-            parentId = ${item.parentId ? `${item.parentId}` : null}, 
+            parentId = ${item.parentId ? `"${item.parentId}"` : null}, 
             code = "${item.code}", 
             name = "${item.name}", 
             type = "${item.type}", 
@@ -77,6 +87,24 @@ export const DataBaseProvider: React.FC = ({ children }) => {
       },
       (e) => console.log(e)
     );
+  };
+  const getChildren = (item: RegisterItem): Promise<RegisterItem[]> => {
+    return new Promise(async function (resolve, reject) {
+      const id = uid(16);
+      db.transaction(
+        (tx) => {
+          tx.executeSql(
+            `select * from items where parentId = '${item.id}' order by code asc`,
+            [],
+            (_, { rows }) => {
+              const result = rows as unknown as { _array: any[] };
+              resolve(result._array);
+            }
+          );
+        },
+        (e) => reject(e)
+      );
+    });
   };
   const remove = (item: RegisterItem) => {
     const id = uid(16);
@@ -98,6 +126,7 @@ export const DataBaseProvider: React.FC = ({ children }) => {
         add,
         update,
         remove,
+        getChildren,
         items,
       }}
     >

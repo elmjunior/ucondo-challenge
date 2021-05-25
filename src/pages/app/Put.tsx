@@ -1,56 +1,17 @@
 import { useNavigation, useRoute } from "@react-navigation/core";
-import React, { useEffect } from "react";
-import { ActivityIndicator, KeyboardAvoidingView } from "react-native";
-import SimpleForm, { InputField } from "../../components/SimpleForm";
+import React from "react";
+import { KeyboardAvoidingView } from "react-native";
+
 import useRequests from "../../hooks/useRequests";
 import { VStack } from "../../layouts";
 import { RegisterItem } from "../../types";
+import Form from "./Form";
 
 export default function Put(): JSX.Element {
   const { poastableItems, createRegister, updateRegister } = useRequests();
   const route = useRoute();
   const params = route.params as { item: RegisterItem };
   const navigation = useNavigation();
-
-  const fields: InputField[] = [
-    {
-      name: "parentId",
-      label: "Conta pai",
-      renderType: "dropdown",
-      options:
-        poastableItems?.filter((item) => item.id !== params?.item?.id) ?? [],
-    },
-    {
-      name: "code",
-      label: "Código",
-      isRequired: true,
-    },
-    {
-      name: "name",
-      label: "Nome",
-      isRequired: true,
-    },
-    {
-      name: "type",
-      label: "Tipo",
-      options: [
-        { id: "receipt", name: "Receita" },
-        { id: "expense", name: "Despesa" },
-      ],
-      renderType: "dropdown",
-      isRequired: true,
-    },
-    {
-      name: "acceptPosting",
-      label: "Aceita lançamentos",
-      options: [
-        { id: "yes", name: "Sim" },
-        { id: "no", name: "Não" },
-      ],
-      renderType: "dropdown",
-      isRequired: true,
-    },
-  ];
 
   const onSubmit = (variables: RegisterItem) => [
     !!params?.item?.id ? updateRegister(variables) : createRegister(variables),
@@ -60,11 +21,7 @@ export default function Put(): JSX.Element {
     <VStack flex={1}>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
         <VStack colorScheme="secondary" p={5} mt={3} btlr={5} btrr={5} flex={1}>
-          <SimpleForm
-            onSubmit={onSubmit}
-            fields={fields}
-            defaultValues={params?.item ?? {}}
-          ></SimpleForm>
+          <Form onSubmit={onSubmit} defaultValues={params?.item} />
         </VStack>
       </KeyboardAvoidingView>
     </VStack>
