@@ -6,6 +6,8 @@ import { RegisterItem } from "../types";
 interface DataBaseContextData {
   items: RegisterItem[];
   add(item: RegisterItem): void;
+  update(item: RegisterItem): void;
+  remove(item: RegisterItem): void;
 }
 
 export const DataBaseContext = React.createContext<DataBaseContextData>(
@@ -56,11 +58,46 @@ export const DataBaseProvider: React.FC = ({ children }) => {
       (e) => console.log(e)
     );
   };
+  const update = (item: RegisterItem) => {
+    const id = uid(16);
+    db.transaction(
+      (tx) => {
+        tx.executeSql(
+          `update items set 
+            parentId = ${item.parentId ? `${item.parentId}` : null}, 
+            code = "${item.code}", 
+            name = "${item.name}", 
+            type = "${item.type}", 
+            acceptPosting = "${item.acceptPosting}" where id = "${item.id}"`
+        );
+        tx.executeSql("select * from items", [], (_, { rows }) => {
+          const result = rows as unknown as { _array: any[] };
+          setItems(result._array);
+        });
+      },
+      (e) => console.log(e)
+    );
+  };
+  const remove = (item: RegisterItem) => {
+    const id = uid(16);
+    db.transaction(
+      (tx) => {
+        tx.executeSql(`delete from items where id = "${item.id}"`);
+        tx.executeSql("select * from items", [], (_, { rows }) => {
+          const result = rows as unknown as { _array: any[] };
+          setItems(result._array);
+        });
+      },
+      (e) => console.log(e)
+    );
+  };
 
   return (
     <DataBaseContext.Provider
       value={{
         add,
+        update,
+        remove,
         items,
       }}
     >

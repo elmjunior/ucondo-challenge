@@ -1,19 +1,22 @@
-import React from "react";
-import { View, Text, KeyboardAvoidingView } from "react-native";
+import { useRoute } from "@react-navigation/core";
+import React, { useEffect } from "react";
+import { ActivityIndicator, KeyboardAvoidingView } from "react-native";
 import SimpleForm, { InputField } from "../../components/SimpleForm";
 import useRequests from "../../hooks/useRequests";
 import { VStack } from "../../layouts";
 import { RegisterItem } from "../../types";
 
 export default function Put(): JSX.Element {
-  const { poastableItems, createRegister } = useRequests();
+  const { poastableItems, createRegister, updateRegister } = useRequests();
+  const route = useRoute();
+  const params = route.params as { item: RegisterItem };
 
   const fields: InputField[] = [
     {
       name: "parentId",
       label: "Conta pai",
       renderType: "dropdown",
-      options: poastableItems,
+      options: poastableItems ?? [],
     },
     {
       name: "code",
@@ -47,7 +50,8 @@ export default function Put(): JSX.Element {
     },
   ];
 
-  const onSubmit = (variables: RegisterItem) => createRegister(variables);
+  const onSubmit = (variables: RegisterItem) =>
+    !!params?.item?.id ? updateRegister(variables) : createRegister(variables);
   return (
     <VStack flex={1}>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
@@ -55,12 +59,7 @@ export default function Put(): JSX.Element {
           <SimpleForm
             onSubmit={onSubmit}
             fields={fields}
-            defaultValues={{
-              code: "1",
-              name: "12",
-              type: "receipt",
-              acceptPosting: "yes",
-            }}
+            defaultValues={params?.item ?? {}}
           ></SimpleForm>
         </VStack>
       </KeyboardAvoidingView>

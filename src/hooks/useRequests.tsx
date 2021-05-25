@@ -7,6 +7,7 @@ interface RequestContextData {
   list: RegisterItem[];
   poastableItems: RegisterItem[];
   createRegister(register: RegisterItem): void;
+  updateRegister(register: RegisterItem): void;
   removeRegister(register: RegisterItem): void;
 
   isLoading: boolean;
@@ -19,6 +20,7 @@ const LIST = gql`
       name
       code
       type
+      acceptPosting
     }
   }
 `;
@@ -30,6 +32,7 @@ const GET = gql`
       name
       code
       type
+      acceptPosting
     }
   }
 `;
@@ -39,7 +42,7 @@ export const RequestContext = React.createContext<RequestContextData>(
 );
 
 export const RequestsProvider: React.FC = ({ children }) => {
-  const { add, items } = useDataBaseContext();
+  const { add, items, update, remove } = useDataBaseContext();
   const { data, loading, client } = useQuery<{ registerItems: RegisterItem[] }>(
     LIST,
     {
@@ -57,12 +60,12 @@ export const RequestsProvider: React.FC = ({ children }) => {
   }, [items]);
 
   const createRegister = (registerItem: RegisterItem) => add(registerItem);
+  const updateRegister = (registerItem: RegisterItem) => update(registerItem);
 
-  const removeRegister = (registerItem: RegisterItem) =>
-    console.log(registerItem);
+  const removeRegister = (registerItem: RegisterItem) => remove(registerItem);
 
   const poastableItems = useMemo(
-    () => data?.registerItems.filter((item) => item.acceptPosting),
+    () => data?.registerItems?.filter((item) => item?.acceptPosting === "yes"),
     [data?.registerItems ?? []]
   );
 
@@ -73,6 +76,7 @@ export const RequestsProvider: React.FC = ({ children }) => {
         poastableItems,
         createRegister,
         removeRegister,
+        updateRegister,
         isLoading: loading,
       }}
     >
