@@ -1,35 +1,20 @@
 import React, { useState } from "react";
 import { HStack, IconFeather, CustomText, Button } from "../../layouts";
 import { RegisterItem } from "../../types";
-import ConfirmRemove from "../ConfirmRemove";
 
 export default function ListItem({
   item,
   onPress,
+  setItemToRemove,
 }: {
   item: RegisterItem;
   onPress(): void;
+  setItemToRemove(): void;
 }): JSX.Element {
-  const [itemToRemove, setItemToRemove] = useState<any | undefined>();
-  const [isLoading, setLoading] = useState(false);
-
-  const handleRemove = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setItemToRemove(undefined);
-    }, 2000);
-  };
-
   const color = item.type === "receipt" ? "green" : "orange";
 
   return (
     <>
-      <ConfirmRemove
-        item={itemToRemove}
-        onCancel={() => setItemToRemove(undefined)}
-        onConfirm={handleRemove}
-        isLoading={isLoading}
-      />
       <HStack
         colorScheme="white"
         br={3}
@@ -43,11 +28,7 @@ export default function ListItem({
             {`${item.code} - ${item.name}`}
           </CustomText>
         </Button>
-        <Button
-          onPress={() => setItemToRemove(item)}
-          colorScheme="transparent"
-          p={0}
-        >
+        <Button onPress={setItemToRemove} colorScheme="transparent" p={0}>
           <IconFeather name="trash" colorScheme="muted" />
         </Button>
       </HStack>

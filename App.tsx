@@ -22,6 +22,7 @@ function AppContent(): JSX.Element {
       <StatusBar
         barStyle={themeMode === "dark" ? "light-content" : "dark-content"}
       />
+
       <ThemeProvider theme={themeMode === "light" ? lightMode : darkMode}>
         <RequestsProvider>
           <Routes />

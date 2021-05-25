@@ -77,3 +77,9 @@ export const Divider = styled(Stack)`
   margin-top: 20px;
   margin-bottom: 20px;
 `;
+
+export const Modal = styled(Stack)`
+  position: absolute;
+  height: 100%;
+  width: 100%;
+`;
