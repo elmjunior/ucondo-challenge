@@ -7,17 +7,16 @@ import { getItem, setItem } from "../../services/storage";
 export default function Main(): JSX.Element {
   const navigation = useNavigation();
   useEffect(() => {
-    navigation.navigate("onboarding");
-    // async function initApp() {
-    //   const hasAccessed = await getItem("hasAccessed");
-    //   if (hasAccessed) {
-    //     return navigation.navigate("app");
-    //   }
+    async function initApp() {
+      const hasAccessed = await getItem("hasAccessed");
+      if (hasAccessed) {
+        return navigation.navigate("app");
+      }
 
-    //   setItem("hasAccessed", true);
-    //   navigation.navigate("onboarding");
-    // }
-    // initApp();
+      setItem("hasAccessed", true);
+      navigation.navigate("onboarding");
+    }
+    initApp();
   }, []);
   return (
     <VStack flex={1} align="center" justify="center">
