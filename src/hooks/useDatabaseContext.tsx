@@ -23,23 +23,27 @@ export const DataBaseProvider: React.FC = ({ children }) => {
     const dbFn = SQLite.openDatabase("ucondo.db");
     return dbFn;
   }
-
   const db = openDatabase();
+
+  function init() {
+    db.transaction((tx) => {
+      tx.executeSql(
+        "create table if not exists items (id text primary key not null, code text unique not null, parentId text, name text, type text, acceptPosting text);",
+        [],
+        () => getItems()
+      );
+    });
+  }
 
   const getItems = (): Promise<RegisterItem[]> => {
     return new Promise(async function (resolve, reject) {
       db.transaction(
         (tx) => {
-          // tx.executeSql("drop table items;");
-          tx.executeSql(
-            "create table if not exists items (id text primary key not null, code text unique not null, parentId text, name text, type text, acceptPosting text);"
-          );
-
           tx.executeSql(
             "select * from items order by code asc",
             [],
             (_, { rows }) => {
-              const result = rows as unknown as { _array: any[] };
+              const result = rows as unknown as { _array: RegisterItem[] };
               resolve(result._array);
               setItems(result._array);
             }
@@ -50,9 +54,7 @@ export const DataBaseProvider: React.FC = ({ children }) => {
     });
   };
 
-  useEffect(() => {
-    getItems();
-  }, []);
+  useEffect(() => init(), []);
 
   const searchItems = (term: string): Promise<RegisterItem[]> => {
     return new Promise(async function (resolve, reject) {
@@ -62,7 +64,7 @@ export const DataBaseProvider: React.FC = ({ children }) => {
             `select * from items where name like '%${term}%' or code like '%${term}%' order by code asc`,
             [],
             (_, { rows }) => {
-              const result = rows as unknown as { _array: any[] };
+              const result = rows as unknown as { _array: RegisterItem[] };
               resolve(result._array);
               setItems(result._array);
             }
@@ -124,7 +126,7 @@ export const DataBaseProvider: React.FC = ({ children }) => {
             `select * from items where parentId = '${item.id}' order by code desc limit 1`,
             [],
             (_, { rows }) => {
-              const result = rows as unknown as { _array: any[] };
+              const result = rows as unknown as { _array: RegisterItem[] };
               resolve(result._array);
             }
           );
@@ -138,7 +140,7 @@ export const DataBaseProvider: React.FC = ({ children }) => {
       (tx) => {
         tx.executeSql(`delete from items where id = "${item.id}"`);
         tx.executeSql("select * from items", [], (_, { rows }) => {
-          const result = rows as unknown as { _array: any[] };
+          const result = rows as unknown as { _array: RegisterItem[] };
           setItems(result._array);
         });
       },
