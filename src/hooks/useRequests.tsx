@@ -13,6 +13,11 @@ interface RequestContextData {
   updateRegister(register: RegisterItem): Promise<PutReturn>;
 }
 
+const handleError = (error: string) =>
+  !!error.match(/UNIQUE/i)
+    ? "Este código já foi utilizado"
+    : "algo errado aconteceu";
+
 export const RequestContext = React.createContext<RequestContextData>(
   {} as RequestContextData
 );
@@ -27,11 +32,7 @@ export const RequestsProvider: React.FC = ({ children }) => {
       const item = await add(registerItem);
       return { item };
     } catch (error) {
-      const message = !!error.toString().match(/UNIQUE/i)
-        ? "Este código já foi utilizado"
-        : "algo errado aconteceu";
-
-      return { error: { message } };
+      return { error: { message: handleError(error) } };
     }
   };
 
@@ -43,11 +44,7 @@ export const RequestsProvider: React.FC = ({ children }) => {
 
       return { item };
     } catch (error) {
-      const message = !!error.toString().match(/UNIQUE/i)
-        ? "Este código já foi utilizado"
-        : "algo errado aconteceu";
-
-      return { error: { message } };
+      return { error: { message: handleError(error) } };
     }
   };
 
